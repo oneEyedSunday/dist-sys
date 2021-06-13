@@ -2,6 +2,8 @@ FROM node:14.16.0-slim
 
 WORKDIR /server
 
+ARG PORT
+
 COPY package.json /server/package.json
 COPY package-lock.json /server/package-lock.json
 
@@ -17,3 +19,5 @@ COPY server.js /server
 
 
 CMD [ "npm", "start" ]
+
+EXPOSE $PORT
