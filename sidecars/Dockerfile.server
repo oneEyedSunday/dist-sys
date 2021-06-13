@@ -1,0 +1,19 @@
+FROM node:14.16.0-slim
+
+WORKDIR /server
+
+COPY package.json /server/package.json
+COPY package-lock.json /server/package-lock.json
+
+# Reduce size further
+RUN npm install --only=production
+
+# prevent checks for updates
+RUN npm config set update-notifier false
+
+# add app
+COPY server.js /server
+
+
+
+CMD [ "npm", "start" ]
