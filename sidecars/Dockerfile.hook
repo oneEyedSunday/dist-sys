@@ -1,0 +1,9 @@
+FROM alpine:3.13.5
+
+WORKDIR /hook
+
+COPY hook.sh /hook/hook.sh
+
+RUN chmod +x /hook/hook.sh
+
+CMD ["sh", "hook.sh"]
