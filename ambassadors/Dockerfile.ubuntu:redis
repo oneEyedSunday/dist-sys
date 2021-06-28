@@ -1,0 +1,9 @@
+FROM ubuntu:bionic
+
+# See https://github.com/tuananh/kubernetes-twemproxy#check-the-installation
+RUN apt-get update && apt-get install -y redis-tools
+
+ARG HOST=twemproxy
+ARG PORT=22121
+
+CMD ["/bin/bash"]

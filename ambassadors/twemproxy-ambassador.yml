@@ -1,0 +1,88 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: twemproxy-ambassador
+spec:
+  containers:
+    - name: twemproxy
+      image: ganomede/twemproxy
+      imagePullPolicy: Never
+      # command:
+      #   - nutcracker
+      #   - -c
+      #   - /etc/config/nutcracker.yml
+      #   - -v
+      #   - 7
+      #   - -s
+      #   - 6222
+      command: [ "nutcracker", "-c", "/etc/config/nutcracker.yml", "-v", "7", "-s", "6222" ]
+      volumeMounts:
+        - name: config-volume
+          mountPath: /etc/config
+  volumes:
+    - name: config-volume
+      configMap:
+        name: nutcracker
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: twemproxy
+  labels:
+    app: twemproxy
+spec:
+  selector:
+    matchLabels:
+      app: twemproxy
+  template:
+    metadata:
+      labels:
+        app: twemproxy
+    spec:
+      containers:
+      - name: twemproxy
+        image: ganomede/twemproxy
+        imagePullPolicy: Never
+        # command:
+        #   - nutcracker
+        #   - -c
+        #   - /etc/config/nutcracker.yml
+        #   - -v
+        #   - 7
+        #   - -s
+        #   - 6222
+        command: [ "nutcracker", "-c", "/etc/config/nutcracker.yml", "-v", "7", "-s", "6222" ]
+        volumeMounts:
+          - name: config-volume
+            mountPath: /etc/config
+      volumes:
+      - name: config-volume
+        configMap:
+          name: nutcracker
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: twemproxy
+  labels:
+    app: twemproxy
+spec:
+  ports:
+  - name: twemproxy
+    port: 22121
+    targetPort: twemproxy
+  selector:
+    app: twemproxy
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: twemproxy-probe
+spec:
+  containers:
+    - name: twemproxy-probe
+      image: oneeyedsunday/redis-cli:bionic-bash
+      imagePullPolicy: Never
+      command: [ "/bin/bash" ]
