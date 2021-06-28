@@ -1,0 +1,46 @@
+# See https://www.codementor.io/@pradeepbuditi/running-twemproxy-in-kubernetes-gsojrw6n6
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: twemproxy
+  name: twemproxy
+spec:
+  selector:
+    matchLabels:
+      app: twemproxy
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: twemproxy
+    spec:
+      containers:
+      - image: jgoodall/twemproxy:latest
+        name: twemproxy
+        ports:
+        - containerPort: 63791
+        - containerPort: 63792
+        - containerPort: 6222
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: twemproxy
+  name: twemproxy
+spec:
+  selector:
+    app: twemproxy
+  ports:
+  - name: "63791"
+    port: 63791
+    targetPort: 63791
+  - name: "63792"
+    port: 63792
+    targetPort: 63792
+  - name: "6222"
+    port: 6222
+    targetPort: 6222
