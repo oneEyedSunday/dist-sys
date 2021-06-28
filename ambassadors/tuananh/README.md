@@ -1,0 +1,1 @@
+See https://github.com/tuananh/kubernetes-twemproxy/blob/e56055bd3d/README.md
