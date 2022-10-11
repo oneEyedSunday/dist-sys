@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: adapter-redis-example
+  namespace: default
+  labels:
+    name: myapp
+spec:
+  containers:
+  - name: redis
+    image: redis:6.2.3-alpine
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: 6379
+  - name: prom-adapter
+    image: oliver006/redis_exporter
+    # Validator cries if I skip this
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
