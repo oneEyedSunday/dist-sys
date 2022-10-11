@@ -1,0 +1,47 @@
+# This is the 'experiment' service
+apiVersion: v1
+kind: Service
+metadata:
+  name: app
+  labels:
+    app: app
+spec:
+  ports:
+  - port: 80
+    name: app
+  selector:
+    # Change this selector to match your application's labels
+    app: app
+---
+# This is the 'prod' service
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  labels:
+    app: web
+spec:
+  ports:
+  - port: 80
+    name: web
+    targetPort: 8081
+  selector:
+    # Change this selector to match your application's labels
+    app: app
+
+---
+# This is the 'prod' service
+apiVersion: v1
+kind: Service
+metadata:
+  name: experiment
+  labels:
+    app: experiment
+spec:
+  ports:
+  - port: 80
+    name: experiment
+    targetPort: 8080
+  selector:
+    # Change this selector to match your application's labels
+    app: app
